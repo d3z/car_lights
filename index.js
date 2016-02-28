@@ -4,17 +4,19 @@
 
 	var five = require('johnny-five'),
 	    board = new five.Board(),
-	    Firebase = require('firebase'),
-	    firebaseref = new Firebase("https://burning-fire-2134.firebaseio.com");
+	    Firebase = require('firebase');
 
 	var left_indicator;
 	var right_indicator;
 	var brake_lights;
+    var head_lights;
 
 	board.on('ready', function() {
 		left_indicator = five.Led(13);
 		right_indicator = five.Led(12);
-		brake_lights = five.Led(11);
+        head_lights = five.Led(11);
+		brake_lights = five.Led(10);
+        var firebaseref = new Firebase("https://burning-fire-2134.firebaseio.com");
 		firebaseref.on('value', function(snapshot) {
 			var data = snapshot.val();
 			handleData(data);
@@ -23,9 +25,9 @@
 
 	function handleData(data) {
 		handleIndicators(data.indicator);
+		handleBrakeLights(data.brakelights);
 		handleHeadLights(data.headlights);
 		handleTailLights(data.taillights);
-		handleBrakeLights(data.brakelights);
 	}
 
 	function handleIndicators(indicators) {
@@ -57,7 +59,16 @@
 		}
 	}
 
-	function handleHeadLights(headlights) {
+	function handleHeadLights(headlight_status) {
+        if (headlight_status === 'side') {
+            head_lights.brightness(32);
+        } else if (headlight_status === 'half') {
+            head_lights.brightness(64);
+        } else if (headlight_status === 'full') {
+            head_lights.on();
+        } else {
+            head_lights.off();
+        }
 	}
 
 	function handleTailLights(taillights) {
