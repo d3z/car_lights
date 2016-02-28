@@ -1,0 +1,15 @@
+{
+  "name": "car_lights",
+  "version": "0.0.1",
+  "description": "Control some arduino car lights",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gareth Fleming <gareth@joocy.com>",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^2.4.1",
+    "johnny-five": "^0.9.26"
+  }
+}
